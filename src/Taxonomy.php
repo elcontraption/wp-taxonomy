@@ -71,6 +71,11 @@ class Taxonomy {
         // Default args
         $this->args = array_replace_recursive($this->defaultArgs(), $args);
 
+        if (isset($this->args['remove_meta_box']))
+        {
+            $this->removeMetaBox();
+        }
+
         // Enforce one term per post
         // if ($this->args['one_term_per_post'])
         // {
@@ -230,5 +235,16 @@ class Taxonomy {
 
 
         <?php
+    }
+
+    /**
+     * Remove taxonomy meta box from post type
+     */
+    protected function removeMetaBox()
+    {
+        add_action('admin_menu', function()
+        {
+            remove_meta_box('tagsdiv-' . $this->name, $this->postType, 'side');
+        });
     }
 }
